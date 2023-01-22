@@ -1,17 +1,20 @@
 import React from 'react';
-import { Input } from './components/Input';
+import { Timer } from './components/Timer';
 
 
 function App() {
-  function processInput(value: string): string {
-    let res: string = '';
-   if(value.toLowerCase().includes("hello")){
-    res = "get tired from HELLO. It`s forbidden word!";
+  
+  return <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-evenly"}}>
+    <div>
+    <Timer inputId={'Input-1'} ></Timer>
+    <Timer inputId={'Input-2'}  ></Timer>
+    </div>
+    <div>
+    <Timer inputId={'Input-3'}  ></Timer>
+    <Timer inputId={'Input-4'}  ></Timer>
+    </div>
+  </div>
 
-   }
-    return res;
-  }
-  return <Input inputId={'input-1'} inputProcess={ processInput }  />
 }
 
 export default App;

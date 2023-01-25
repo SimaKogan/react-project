@@ -19,8 +19,6 @@ export const Timer: React.FC<TimerProps> = (props) => {
         }
         return res;
     }
-
-
     const [time, setTime] = React.useState(new Date());
     function tick() {
         console.log("tick");
@@ -30,7 +28,6 @@ export const Timer: React.FC<TimerProps> = (props) => {
         const interval = setInterval(tick, 1000);
         return () => clearInterval(interval);
     }, [])
-
     return <div style={{ marginTop: "10vh", borderStyle: "solid", width: "15vw", height: "30vh" }}>
         <Input type={"text"} inputProcess={processInput} placeholder='enter country/city'  />
         <h3 style={{ display: "block", textAlign: "center", fontSize: "2em" }}>
@@ -41,7 +38,6 @@ export const Timer: React.FC<TimerProps> = (props) => {
         </label>
     </div>
 }
-
 function findIndexZone(zoneName: string): number {
     return timeZones.findIndex(timeZone => {
         return JSON.stringify(timeZone).includes("\"" + zoneName + "\"");

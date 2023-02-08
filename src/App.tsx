@@ -1,31 +1,14 @@
-import { Input } from './components/Input';
 import React from 'react';
-
-
-
+import { Life } from './components/Life';
+import lifeConfig from './config/life-game.json'
+import './App.css'
 function App() {
-  const properties: React.CSSProperties = {
-    display: "flex",
-    flexWrap: "wrap"
-  }
-  const [colors,setcolors] = React.useState<string[]>([])
-function creatingDivs(value:string): string {
-    const colors: string[] = value.split("#") ;// red#green => ['red,'green']
-    setcolors(colors.slice());
-    return '';
-}
-function getDivs(colors: string[]): JSX.Element[]{
-  return colors.map(color => <div style={{width:"5vw" , height:"5vh",
-backgroundColor:color}}></div>)
-}
+  
 
-return <section style={{display: "flex",flexDirection:"column"}}>
-   <Input placeHolder={'enter color separated by #'} inputProcess={creatingDivs}/> 
-    <section style={properties}>
-   {getDivs(colors)}
-    </section>
-
-  </section>
+  return <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+    <Life dimensions={lifeConfig.dimensions} ticInterval={lifeConfig.ticInterval}></Life>
+  </div>
 
 }
+
 export default App;

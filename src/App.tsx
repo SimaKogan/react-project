@@ -1,41 +1,31 @@
-.App {
-  text-align: center;
-}
+import { Input } from './components/Input';
+import React from 'react';
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+
+function App() {
+  const properties: React.CSSProperties = {
+    display: "flex",
+    flexWrap: "wrap"
   }
+  const [colors,setcolors] = React.useState<string[]>([])
+function creatingDivs(value:string): string {
+    const colors: string[] = value.split("#") ;// red#green => ['red,'green']
+    setcolors(colors.slice());
+    return '';
+}
+function getDivs(colors: string[]): JSX.Element[]{
+  return colors.map(color => <div style={{width:"5vw" , height:"5vh",
+backgroundColor:color}}></div>)
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+return <section style={{display: "flex",flexDirection:"column"}}>
+   <Input placeHolder={'enter color separated by #'} inputProcess={creatingDivs}/> 
+    <section style={properties}>
+   {getDivs(colors)}
+    </section>
 
-.App-link {
-  color: #61dafb;
-}
+  </section>
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
-body, html {
-  height: 100%;
-}
+export default App;

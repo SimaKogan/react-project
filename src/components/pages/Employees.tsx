@@ -1,23 +1,25 @@
-import { Box, List, ListItem, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
-import { Employee } from "../../models/Employee";
-
+import React from 'react';
+import {Box, List, ListItem, Typography} from '@mui/material';
+import { useSelector } from 'react-redux';
+import { Employee } from '../../model/Employee';
+import {DataGrid, GridColumns} from '@mui/x-data-grid';
+import './table.css'
 export const Employees: React.FC = () => {
-    const employees = useSelector<any, Employee[]>(state => state.employees.employees);
-    return <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-         {!employees.length && <Typography sx={{ fontSize: "1.8em" }}>Not employees</Typography>}
-         {employees.length && <List>           
-             {getListEmployees(employees)}
-        </List>
-}
+    const columns=React.useRef<GridColumns>([
+        {field: 'name', headerClassName:'header', headerName: 'Employee Name',
+         flex: 1, headerAlign: 'center', align: 'center' },
+        {field: 'birthDate', headerName: 'Date of Birth', flex: 1,headerClassName:'header',
+         type:"date",headerAlign: 'center',align: 'center'},
+        {field: 'department', headerName: 'Department',headerClassName:'header',
+         flex: 1,headerAlign: 'center',align: 'center'},
+        {field: 'salary', headerName: "Salary (NIS)", headerClassName:'header',
+        flex: 0.7, type: "number",headerAlign: 'center', align: 'center'}
+    ])
+    const employees = useSelector<any, Employee[]>(state => state.company.employees);
+    return <Box sx={{height: "80vh", width: "80vw"}}>
+        <DataGrid columns={columns.current} rows={employees}/>
     </Box>
 }
-function getListEmployees(employees: Array<Employee>): React.ReactNode {
-    return employees.map((empl, ind) => {
-        return <ListItem key={ind}>{`ID: ${empl.id} NAME: ${empl.name} 
-        BIRTHDAY: ${empl.birthDate} DEPARTMENT: ${empl.department} SALARY: ${empl.salary}`
-        }
-        </ListItem>    
-    }
-    )
+function getListItems(employees: Employee[]): React.ReactNode {
+    return employees.map((empl, index) => <ListItem key={index}><Typography>{JSON.stringify(empl)}</Typography></ListItem>)
 }

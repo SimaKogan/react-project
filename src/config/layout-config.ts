@@ -1,4 +1,4 @@
-import { NavigatorProps } from "../model/NavigatorProps";
+import { NavigatorProps } from "../models/NavigatorProps";
 export const layoutConfig: NavigatorProps = {
     className: 'navigator-list',
     routes: [

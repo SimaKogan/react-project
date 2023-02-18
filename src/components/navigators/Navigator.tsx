@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import { NavigatorProps } from "../../model/NavigatorProps"
+import { NavigatorProps } from "../../models/NavigatorProps"
 import '../navigators/navigators.css'
 import { Box, AppBar, Tabs, Tab } from "@mui/material"
 import React from "react";

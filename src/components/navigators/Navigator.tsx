@@ -1,23 +1,28 @@
-import { Link, Outlet } from "react-router-dom";
-import { NavigatorProps } from "../../models/NavigatorProps"
-import '../navigators/navigators.css'
-import { Box, AppBar, Tabs, Tab } from "@mui/material"
+import { NavigatorProps } from "../../models/NavigatorProps";
 import React from "react";
-export const Navigator: React.FC<NavigatorProps> = ({ className, routes }) => {
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { AppBar, Box, Tab, Tabs } from "@mui/material";
+
+export const Navigator: React.FC<NavigatorProps> = ({ routers }) => {
     const [tabNumber, setTabNumber] = React.useState(0);
     function changeTabNumber(event: any, newNumber: number) {
-        setTabNumber(newNumber);
+            setTabNumber(newNumber);
+        
     }
+    const navigate = useNavigate();
+    React.useEffect(() => {
+        setTabNumber(0);
+        navigate(routers[0].path);
+    }, [routers]);
     return <Box sx={{ marginTop: "15vh" }}>
-        <AppBar sx={{ backgroundColor: "lightgray" }}>
-            <Tabs value={tabNumber} onChange={changeTabNumber} >
-                {getNavItems(routes)}
+        <AppBar sx={{ backgroundColor: "lightgrey" }}>
+            <Tabs value={tabNumber} onChange={changeTabNumber}>
+                {routers.map((router, index) =>
+                    <Tab component={Link} to={"/" + router.path} label={router.label} key={index} ></Tab>
+                )
+                }
             </Tabs>
         </AppBar>
         <Outlet></Outlet>
     </Box>
-}
-function getNavItems(routes: { path: string; label: string }[]): React.ReactNode {
-    return routes.map((r, index) => <Tab component={Link} to={r.path}
-        label={r.label} key={index} />)
 }

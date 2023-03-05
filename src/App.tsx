@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navigator } from './components/navigators/Navigator';
-import './App.css'
+//import './App.css'
 
 import { layoutConfig } from './config/layout-config';
 import { Employees } from './components/pages/Employees';
@@ -8,44 +8,29 @@ import { AddEmployee } from './components/pages/AddEmployee';
 import { AgeStatistics } from './components/pages/AgeStatistics';
 import { SalaryStatistics } from './components/pages/SalaryStatistics';
 import { useEffect, useState } from 'react';
+import { NavigatorProps } from './model/NavigatorProps';
 import { RouteType } from './model/RouteType';
 import { useSelector } from 'react-redux';
 import { Login } from './components/pages/Login';
 import { Logout } from './components/pages/Logout';
 import { Generation } from './components/pages/Generation';
-import { NavigatorDispatch } from './components/navigators/NavigatorDispatch';
-
+import {Grid, Paper} from "@mui/material"
 
 function App() {
-    const [routes, setRoutes] = useState<RouteType[]>([]);
-    const authUser:string = useSelector<any,string>(state=>state.auth.authenticated );
-    useEffect(()=> {
-        function getRoutes(): RouteType[] {
-            const logoutRoute: RouteType |undefined = layoutConfig.routes
-            .find(r => r.path.includes('logout'))
-            logoutRoute!.label = authUser;
-            return layoutConfig.routes.filter(r => (!authUser && !r.flAuth) ||
-            (authUser.includes('admin') && r.flAdmin) ||
-            (authUser && r.flAuth && !r.flAdmin))
-        }
-        setRoutes(getRoutes());
-    }, [authUser])
-  return <BrowserRouter>
-      <Routes>
-          <Route path='/' element={<NavigatorDispatch 
-           routes={routes}  />}>
-              <Route index element={<Employees/>}/>
-              <Route path='add' element={<AddEmployee/>}/>
-              <Route path='statistics/age' element={<AgeStatistics/>}/>
-              <Route path='statistics/salary' element={<SalaryStatistics/>}/>
-              <Route path='login' element={<Login/>}/>
-              <Route path='logout' element={<Logout/>}/>
-              <Route path='generation' element={<Generation/>}/>
-              
-          </Route>
-              
-      </Routes>
-  </BrowserRouter>
+    return <Grid container rowSpacing={8} columnSpacing={4} justifyContent="center">
+        <Grid item xs={10} sm={4} md={3}>
+            <Paper sx={{fontSize: {xs:"1.5em", sm:"1.2em", md:"1em"}}}>xs=6, sm=4</Paper>
+        </Grid>
+        <Grid item xs={10} sm={6} md={3}>
+            <Paper>xs=4, sm=6</Paper>
+        </Grid>
+        <Grid item xs={10} sm={6} md={3}>
+            <Paper>xs=4, sm=6</Paper>
+        </Grid>
+        <Grid item xs={10} sm={4} md={3}>
+            <Paper>xs=6, sm=4</Paper>
+        </Grid>
+    </Grid>
 
 }
 export default App;

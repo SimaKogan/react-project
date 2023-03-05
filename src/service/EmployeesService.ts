@@ -1,78 +1,50 @@
-import { Employee } from "../models/Employee";
-import { getRandomDate, getRandomNumber } from "../utils/random";
-import configEmpl from "../config/employee-config.json"
-
-
-export type Stat = {
-    min: number; max: number; avr: number
+import { Employee } from "../model/Employee"
+import { getElement, getRandomDate, getRandomNumber } from "../utils/random";
+import employeeConfig from "../config/employee-config.json";
+export function createRandomEmployee(): Employee {
+    const {minId, maxId, departments,
+         minBirthYear, maxBirthYear, minSalary, maxSalary} = employeeConfig;
+    const id = getRandomNumber(minId, maxId,true, true);
+    const name = "name" + id.toString().slice(0,3);
+    const department = getElement(departments);
+    const birthDate = getRandomDate(minBirthYear, maxBirthYear).toISOString()
+    .slice(0, 10);
+    const salary = getRandomNumber(minSalary, maxSalary);
+    const employee: Employee = {id:0, name, department,
+         birthDate, salary}
+    return employee;
 }
-export function statAge(employees: Array<Employee>): Stat {
-    const dateCurrent: Date = new Date();
-    const yearCurrent: number = dateCurrent.getFullYear();
-    const minResYear = getAgeEmployee(employees[0], yearCurrent);
-    return employees.reduce((res, empl) => {
-        const ageEmpl: number = getAgeEmployee(empl, yearCurrent);
-        if (ageEmpl < res.min) {
-            res.min = ageEmpl
+export function statAge(employees: Employee[]):
+ {minAge:number, maxAge:number, avgAge: number} {
+    const currentYear = new Date().getFullYear();
+    const result = employees.reduce((res, empl) => {
+        const age = currentYear - new Date(empl.birthDate).getFullYear();
+        if (res.minAge > age) {
+            res.minAge = age;
+        } else if(res.maxAge < age) {
+            res.maxAge = age
         }
-        if (ageEmpl > res.max) {
-            res.max = ageEmpl
-        }
-        res.avr += Math.floor(ageEmpl / employees.length);
+        res.avgAge += age;
         return res;
-    }, { min: minResYear, max: minResYear, avr: 0 })
-}
 
-export function statSalary(employees: Array<Employee>): Stat {
-    return employees.reduce((res, empl) => {
-        if (empl.salary < res.min) {
-            res.min = empl.salary
+    }, {minAge: 1000, maxAge: 0, avgAge:0});
+    result.avgAge = Math.trunc(result.avgAge / employees.length) ;
+    return result;
+}
+export function statSalary(employees: Employee[]):
+ {minSalary:number, maxSalary:number, avgSalary: number} {
+   
+    const result = employees.reduce((res, empl) => {
+        const {salary} = empl;
+        if (res.minSalary > salary) {
+            res.minSalary = salary;
+        } else if(res.maxSalary < salary) {
+            res.maxSalary = salary;
         }
-        if (empl.salary > res.max) {
-            res.max = empl.salary
-        }
-        res.avr +=  Math.floor(empl.salary / employees.length);
+        res.avgSalary += salary;
         return res;
-    }, { min: employees[0].salary, max: employees[0].salary, avr: 0 })
-}
 
-export function createRandomEmployee(employees: Employee[]): Employee {
-    return {
-        id: getID(employees),
-        name: getRandomName(),
-        birthDate: getBirthDate(),
-        department: configEmpl.department[getRandomNumber(0, configEmpl.department.length)],
-        salary: getRandomNumber(configEmpl.minSalary, configEmpl.maxSalary)
-    }
-}
-
-function getRandomName(): string {
-    const NAMES: string[] = ['Dan', 'Dima', 'Yury', 'Vladimir', 'Moshe', 'Bill', 'Emma', 'Olivia'];
-    return NAMES[getRandomNumber(0, NAMES.length)];
-}
-
-function getBirthDate(): string {
-    const randomDate = getRandomDate(configEmpl.minBirthYear, configEmpl.maxBirthYear);
-    const dateArr = randomDate.toISOString().split("T");
-    return dateArr[0];
-}
-
-function getID(employees: Employee[]): number {
-    let id: number = getRandomNumber(configEmpl.minId, configEmpl.maxID);
-    let res: boolean = isIDUnique(employees,id);
-    while (res) {
-        id = getRandomNumber(configEmpl.minId, configEmpl.maxID);
-        res = isIDUnique(employees,id);
-    }
-    return id;
-}
-
-function getAgeEmployee(employee: Employee, currentYear: number): number {
-    const yearEmpl: number = +employee.birthDate.slice(0, 4);
-    const ageEmpl: number = currentYear - yearEmpl;
-    return ageEmpl;
-}
-
-function isIDUnique(employees: Employee[], id: number): boolean {
-    return employees.reduce((res, empl) => empl.id === id ? res = true : res , false)
+    }, {minSalary: Number.MAX_VALUE, maxSalary: 0, avgSalary:0});
+    result.avgSalary = Math.trunc(result.avgSalary / employees.length) ;
+    return result;
 }

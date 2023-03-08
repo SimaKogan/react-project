@@ -5,9 +5,11 @@ export class AuthService {
         {username: "admin@gmail.com", password: "admin1234"}
     ];
     login(loginData: LoginData) {
-        //TODO 
-        //throws exception in the case mismatchin a given loginData
-        //with array of users (field users)
+     
+      const user = this.users.find(u => loginData.username === u.username);
+      if (!user || user.password !== loginData.password) {
+        throw 'Wrong credentials';
+      }
     }
 
 }

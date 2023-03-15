@@ -16,7 +16,6 @@ import { Logout } from './components/pages/Logout';
 import { Generation } from './components/pages/Generation';
 import { NavigatorDispatch } from './components/navigators/NavigatorDispatch';
 
-
 function App() {
     const dispatch = useDispatch<any>();
     const [routes, setRoutes] = useState<RouteType[]>([]);
